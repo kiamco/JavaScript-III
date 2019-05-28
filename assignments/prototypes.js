@@ -160,3 +160,64 @@ console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
 // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
 // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+function Hero(info) {
+    Humanoid.call(this, info);
+    this.className = info.className;
+}
+
+Hero.prototype.attack = function(dmg, target) {
+    target.healthPoints = target.healthPoints - dmg
+    if (target.healthPoints <= 0) {
+        console.log(`${target.name} died`)
+        console.log(target.destroy());
+    }
+    return target.healthPoints;
+}
+
+
+function Villain(info) {
+    Hero.call(this, info);
+}
+
+
+Villain.prototype = Object.create(Hero.prototype);
+Villain.prototype = Object.create(GameObject.prototype);
+const heroSam = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+        length: 2,
+        width: 1,
+        height: 1,
+    },
+    healthPoints: 5,
+    name: 'Bruce',
+    team: 'Mage Guild',
+    weapons: [
+        'Staff of Shamalama',
+    ],
+    language: 'Common Tongue',
+    className: "HeroSam"
+});
+
+const villain = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+        length: 1,
+        width: 2,
+        height: 4,
+    },
+    healthPoints: 100,
+    name: 'Lilith',
+    team: 'Forest Kingdom',
+    weapons: [
+        'Bow',
+        'Dagger',
+    ],
+    language: 'Elvish',
+})
+
+console.log(`Hero ${heroSam.name} dealt 10 points dmg ` + heroSam.attack(10, villain) + ` to ${villain.name}`);
+console.log(`Hero ${heroSam.name} dealt 20 points dmg ` + heroSam.attack(20, villain) + ` to ${villain.name}`);
+console.log(`Critical Strike!! ${heroSam.name} dealt 100 points dmg to ${villain.name}`)
+heroSam.attack(100, villain);
